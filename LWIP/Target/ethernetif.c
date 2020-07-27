@@ -223,6 +223,10 @@ static void low_level_init(struct netif *netif)
   heth.Init.MediaInterface = ETH_MEDIA_INTERFACE_RMII;
 
   /* USER CODE BEGIN MACADDRESS */
+  uint32_t sn0 = *(uint32_t *)(0x1FF0F420);//STM32 cpu id
+  MACAddr[3] = (sn0 >> 16) & 0xFF;//STM32 cpu ID
+  MACAddr[4] = (sn0 >> 8) & 0xFFF;
+  MACAddr[5] = sn0 & 0xFF; 
     
   /* USER CODE END MACADDRESS */
 
