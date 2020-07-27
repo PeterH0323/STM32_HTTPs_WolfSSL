@@ -70,7 +70,7 @@ static const size_t __ssl_root_certificate_len = sizeof(__ssl_root_certificate);
 */
 time_t XTIME(time_t * timer)
 {
-	time_t timestamp = 1595842916; // 没有实现 SNTP，先使用网上获取的最新时间的时间戳
+	time_t timestamp = 1595856796; // 没有实现 SNTP，先使用网上获取的最新时间的时间戳
 	return timestamp;
 }
 
