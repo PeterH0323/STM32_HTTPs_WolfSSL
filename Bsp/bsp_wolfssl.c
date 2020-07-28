@@ -71,7 +71,7 @@ static const size_t __ssl_root_certificate_len = sizeof(__ssl_root_certificate);
 */
 time_t XTIME(time_t * timer)
 {
-	time_t timestamp = 1595902339; // 没有实现 SNTP，先使用网上获取的最新时间的时间戳
+	time_t timestamp = 1595905575; // 没有实现 SNTP，先使用网上获取的最新时间的时间戳
 	return timestamp;
 }
 
@@ -204,6 +204,7 @@ int test_https(void)
 //	char request_buffer[126] = "/callback?cmd=1059&callback=phone&phone=15900000000";
 	char http_head[] = HTTPS_GET_API;
 	vTaskDelay(2000); // 给时间测试 ping
+	
 	#ifdef TEST_MODE //开启测试模式，会打印调试信息，需要加入宏定义 DEBUG_WOLFSSL，
 		wolfSSL_Debugging_ON();
 	#endif

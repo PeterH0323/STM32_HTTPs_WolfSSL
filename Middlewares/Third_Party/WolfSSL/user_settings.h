@@ -8,6 +8,7 @@ extern "C" {
 #endif
 
 
+
 /* ------------------------------------------------------------------------- */
 /* Platform */
 /* ------------------------------------------------------------------------- */
@@ -39,6 +40,38 @@ extern "C" {
 
 //#define HAVE_LWIP_NATIVE
 
+/* ------------------------------------------------------------------------- */
+/* Debugging */
+/* ------------------------------------------------------------------------- */
+#undef  WOLFSSL_DEBUG
+#define WOLFSSL_DEBUG
+
+#ifdef WOLFSSL_DEBUG
+    /* Use this to measure / print heap usage */
+    #if 0
+        #undef  USE_WOLFSSL_MEMORY
+        #define USE_WOLFSSL_MEMORY
+
+        #undef  WOLFSSL_TRACK_MEMORY
+        #define WOLFSSL_TRACK_MEMORY
+    #endif
+#else
+//    #undef  NO_WOLFSSL_MEMORY
+//    #define NO_WOLFSSL_MEMORY
+
+    #undef  NO_ERROR_STRINGS
+    //#define NO_ERROR_STRINGS
+#endif
+
+//Enable wolfssl log print
+//#define DEBUG_WOLFSSL
+#ifdef DEBUG_WOLFSSL
+	#undef  WOLFSSL_DEBUG_ERRORS_ONLY
+
+	#include "bsp_printlog.h"
+	#define WOLFSSL_USER_LOG(x)	do { print_log(x); print_log("\n"); } while(0);
+#endif
+	
 /* ------------------------------------------------------------------------- */
 /* Math Configuration */
 /* ------------------------------------------------------------------------- */
@@ -248,35 +281,7 @@ extern "C" {
 //#define USE_CERT_BUFFERS_256
 
 
-/* ------------------------------------------------------------------------- */
-/* Debugging */
-/* ------------------------------------------------------------------------- */
-#undef  WOLFSSL_DEBUG
-#define WOLFSSL_DEBUG
 
-#ifdef WOLFSSL_DEBUG
-    /* Use this to measure / print heap usage */
-    #if 0
-        #undef  USE_WOLFSSL_MEMORY
-        #define USE_WOLFSSL_MEMORY
-
-        #undef  WOLFSSL_TRACK_MEMORY
-        #define WOLFSSL_TRACK_MEMORY
-    #endif
-#else
-//    #undef  NO_WOLFSSL_MEMORY
-//    #define NO_WOLFSSL_MEMORY
-
-    #undef  NO_ERROR_STRINGS
-    //#define NO_ERROR_STRINGS
-#endif
-
-#ifdef DEBUG_WOLFSSL
-	#undef  WOLFSSL_DEBUG_ERRORS_ONLY
-
-	#include "dbg_tools.h"
-	#define WOLFSSL_USER_LOG(x)	do { DbgPrint(x); DbgPrint("\n"); } while(0);
-#endif
 
 /* ------------------------------------------------------------------------- */
 /* Port */
