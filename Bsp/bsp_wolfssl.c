@@ -202,7 +202,8 @@ int test_https(void)
 {
 	char URL[] = "https://www.baifubao.com/callback?cmd=1059&callback=phone&phone=15900000000";
 //	char request_buffer[126] = "/callback?cmd=1059&callback=phone&phone=15900000000";
-	
+	char http_head[] = HTTPS_GET_API;
+	vTaskDelay(2000); // 给时间测试 ping
 	#ifdef TEST_MODE //开启测试模式，会打印调试信息，需要加入宏定义 DEBUG_WOLFSSL，
 		wolfSSL_Debugging_ON();
 	#endif
@@ -292,7 +293,6 @@ int test_https(void)
 	
 	//==================================================================	
 	//访问
-	char http_head[] = HTTPS_GET_API;
 	if (wolfSSL_write(ssl, HTTPS_GET_API, strlen(http_head)) != strlen(http_head))
 	{
 		return HTTPS_WRITE_FAIL;
