@@ -8,6 +8,7 @@
 /* lwip includes. */
 #include "lwip.h"
 #include "lwip/api.h"
+#include "lwip/dns.h"
 
 /* wolfssl includes. */
 #include <wolfssl/ssl.h>
@@ -70,7 +71,7 @@ static const size_t __ssl_root_certificate_len = sizeof(__ssl_root_certificate);
 */
 time_t XTIME(time_t * timer)
 {
-	time_t timestamp = 1595856796; // 没有实现 SNTP，先使用网上获取的最新时间的时间戳
+	time_t timestamp = 1595902339; // 没有实现 SNTP，先使用网上获取的最新时间的时间戳
 	return timestamp;
 }
 
@@ -83,8 +84,9 @@ enum {
 	HTTPS_NOSOCKET = -5,
 	HTTPS_SSL_NEW_FAIL = -6,
 	HTTPS_SOCKET_SET_FAIL = -7,
-	HTTPS_HTTPS_WRITE_FAIL = -8,
-	HTTPS_HTTPS_READ_FAIL = -9,
+	HTTPS_WRITE_FAIL = -8,
+	HTTPS_READ_FAIL = -9,
+	HTTPS_DNS_IP_FAIL = -10,
 };
 
 /*!
@@ -232,16 +234,23 @@ int test_https(void)
 	//==================================================================
 
 	//进行域名解析
-//	ip_addr_t server_ip ;
-//	char host_name[] = "www.baifubao.com";
-//	netconn_gethostbyname(host_name, &server_ip);
-//	if(server_ip.addr == 0)
-//	{
-//        return HTTPS_CA_LOAD_FAIL;
-//	}
-
 	ip_addr_t server_ip ;
-	ip4_addr_set_u32(&server_ip, ipaddr_addr("180.97.34.159"));
+	char host_name[] = "www.baifubao.com";
+//	char host_name[] = "www.baidu.com";
+	err_t err = ERR_OK;
+	err = netconn_gethostbyname(host_name, &server_ip);
+	if(err != ERR_OK)
+	{
+        return HTTPS_DNS_IP_FAIL;
+	}
+	
+	if(server_ip.addr == 0)
+	{
+        return HTTPS_DNS_IP_FAIL;
+	}
+	
+//	ip_addr_t server_ip ;
+//	ip4_addr_set_u32(&server_ip, ipaddr_addr("180.97.93.57"));
 	//==================================================================
 	
 	// 进行 socket 连接
@@ -286,7 +295,7 @@ int test_https(void)
 	char http_head[] = HTTPS_GET_API;
 	if (wolfSSL_write(ssl, HTTPS_GET_API, strlen(http_head)) != strlen(http_head))
 	{
-		return HTTPS_HTTPS_WRITE_FAIL;
+		return HTTPS_WRITE_FAIL;
 	}
 
 	//==================================================================	
@@ -295,7 +304,7 @@ int test_https(void)
 	int recv_len = 0;
 	if ((recv_len = wolfSSL_read(ssl, __https_recv_buffer, sizeof(__https_recv_buffer))) <= 0)
 	{
-		return HTTPS_HTTPS_READ_FAIL;
+		return HTTPS_READ_FAIL;
 	}
 	
 	//==================================================================
