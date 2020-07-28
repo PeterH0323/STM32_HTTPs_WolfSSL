@@ -18,7 +18,73 @@
 /* bsp includes. */
 #include "bsp_wolfssl.h"
 
-// 需要访问的服务器的 CA 证书，
+// 需要访问的服务器的 CA 证书
+
+#define USE_SPECAIL_TEST // 使用 其他 的测试接口
+
+#ifdef USE_SPECAIL_TEST
+static const unsigned char __ssl_root_certificate[] =
+"-----BEGIN CERTIFICATE-----"
+"MIIKLjCCCRagAwIBAgIMclh4Nm6fVugdQYhIMA0GCSqGSIb3DQEBCwUAMGYxCzAJ"
+"BgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMTwwOgYDVQQDEzNH"
+"bG9iYWxTaWduIE9yZ2FuaXphdGlvbiBWYWxpZGF0aW9uIENBIC0gU0hBMjU2IC0g"
+"RzIwHhcNMjAwNDAyMDcwNDU4WhcNMjEwNzI2MDUzMTAyWjCBpzELMAkGA1UEBhMC"
+"Q04xEDAOBgNVBAgTB2JlaWppbmcxEDAOBgNVBAcTB2JlaWppbmcxJTAjBgNVBAsT"
+"HHNlcnZpY2Ugb3BlcmF0aW9uIGRlcGFydG1lbnQxOTA3BgNVBAoTMEJlaWppbmcg"
+"QmFpZHUgTmV0Y29tIFNjaWVuY2UgVGVjaG5vbG9neSBDby4sIEx0ZDESMBAGA1UE"
+"AxMJYmFpZHUuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwamw"
+"rkca0lfrHRUfblyy5PgLINvqAN8p/6RriSZLnyMv7FewirhGQCp+vNxaRZdPrUEO"
+"vCCGSwxdVSFH4jE8V6fsmUfrRw1y18gWVHXv00URD0vOYHpGXCh0ro4bvthwZnuo"
+"k0ko0qN2lFXefCfyD/eYDK2G2sau/Z/w2YEympfjIe4EkpbkeBHlxBAOEDF6Speg"
+"68ebxNqJN6nDN9dWsX9Sx9kmCtavOBaxbftzebFoeQOQ64h7jEiRmFGlB5SGpXhG"
+"eY9Ym+k1Wafxe1cxCpDPJM4NJOeSsmrp5pY3Crh8hy900lzoSwpfZhinQYbPJqYI"
+"jqVJF5JTs5Glz1OwMQIDAQABo4IGmDCCBpQwDgYDVR0PAQH/BAQDAgWgMIGgBggr"
+"BgEFBQcBAQSBkzCBkDBNBggrBgEFBQcwAoZBaHR0cDovL3NlY3VyZS5nbG9iYWxz"
+"aWduLmNvbS9jYWNlcnQvZ3Nvcmdhbml6YXRpb252YWxzaGEyZzJyMS5jcnQwPwYI"
+"KwYBBQUHMAGGM2h0dHA6Ly9vY3NwMi5nbG9iYWxzaWduLmNvbS9nc29yZ2FuaXph"
+"dGlvbnZhbHNoYTJnMjBWBgNVHSAETzBNMEEGCSsGAQQBoDIBFDA0MDIGCCsGAQUF"
+"BwIBFiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAIBgZn"
+"gQwBAgIwCQYDVR0TBAIwADBJBgNVHR8EQjBAMD6gPKA6hjhodHRwOi8vY3JsLmds"
+"b2JhbHNpZ24uY29tL2dzL2dzb3JnYW5pemF0aW9udmFsc2hhMmcyLmNybDCCA04G"
+"A1UdEQSCA0UwggNBggliYWlkdS5jb22CDGJhaWZ1YmFvLmNvbYIMd3d3LmJhaWR1"
+"LmNughB3d3cuYmFpZHUuY29tLmNugg9tY3QueS5udW9taS5jb22CC2Fwb2xsby5h"
+"dXRvggZkd3ouY26CCyouYmFpZHUuY29tgg4qLmJhaWZ1YmFvLmNvbYIRKi5iYWlk"
+"dXN0YXRpYy5jb22CDiouYmRzdGF0aWMuY29tggsqLmJkaW1nLmNvbYIMKi5oYW8x"
+"MjMuY29tggsqLm51b21pLmNvbYINKi5jaHVhbmtlLmNvbYINKi50cnVzdGdvLmNv"
+"bYIPKi5iY2UuYmFpZHUuY29tghAqLmV5dW4uYmFpZHUuY29tgg8qLm1hcC5iYWlk"
+"dS5jb22CDyoubWJkLmJhaWR1LmNvbYIRKi5mYW55aS5iYWlkdS5jb22CDiouYmFp"
+"ZHViY2UuY29tggwqLm1pcGNkbi5jb22CECoubmV3cy5iYWlkdS5jb22CDiouYmFp"
+"ZHVwY3MuY29tggwqLmFpcGFnZS5jb22CCyouYWlwYWdlLmNugg0qLmJjZWhvc3Qu"
+"Y29tghAqLnNhZmUuYmFpZHUuY29tgg4qLmltLmJhaWR1LmNvbYISKi5iYWlkdWNv"
+"bnRlbnQuY29tggsqLmRsbmVsLmNvbYILKi5kbG5lbC5vcmeCEiouZHVlcm9zLmJh"
+"aWR1LmNvbYIOKi5zdS5iYWlkdS5jb22CCCouOTEuY29tghIqLmhhbzEyMy5iYWlk"
+"dS5jb22CDSouYXBvbGxvLmF1dG+CEioueHVlc2h1LmJhaWR1LmNvbYIRKi5iai5i"
+"YWlkdWJjZS5jb22CESouZ3ouYmFpZHViY2UuY29tgg4qLnNtYXJ0YXBwcy5jboIN"
+"Ki5iZHRqcmN2LmNvbYIMKi5oYW8yMjIuY29tggwqLmhhb2thbi5jb22CDyoucGFl"
+"LmJhaWR1LmNvbYIRKi52ZC5iZHN0YXRpYy5jb22CEmNsaWNrLmhtLmJhaWR1LmNv"
+"bYIQbG9nLmhtLmJhaWR1LmNvbYIQY20ucG9zLmJhaWR1LmNvbYIQd24ucG9zLmJh"
+"aWR1LmNvbYIUdXBkYXRlLnBhbi5iYWlkdS5jb20wHQYDVR0lBBYwFAYIKwYBBQUH"
+"AwEGCCsGAQUFBwMCMB8GA1UdIwQYMBaAFJbeYfG9HBYpUxzAzH07gwBA5hp8MB0G"
+"A1UdDgQWBBSeyXnX6VurihbMMo7GmeafIEI1hzCCAX4GCisGAQQB1nkCBAIEggFu"
+"BIIBagFoAHYAXNxDkv7mq0VEsV6a1FbmEDf71fpH3KFzlLJe5vbHDsoAAAFxObU8"
+"ugAABAMARzBFAiBphmgxIbNZXaPWiUqXRWYLaRST38KecoekKIof5fXmsgIhAMkZ"
+"tF8XyKCu/nZll1e9vIlKbW8RrUr/74HpmScVRRsBAHYAb1N2rDHwMRnYmQCkURX/"
+"dxUcEdkCwQApBo2yCJo32RMAAAFxObU85AAABAMARzBFAiBURWwwTgXZ+9IV3mhm"
+"E0EOzbg901DLRszbLIpafDY/XgIhALsvEGqbBVrpGxhKoTVlz7+GWom8SrfUeHcn"
+"4+9Dn7xGAHYA9lyUL9F3MCIUVBgIMJRWjuNNExkzv98MLyALzE7xZOMAAAFxObU8"
+"qwAABAMARzBFAiBFBYPxKEdhlf6bqbwxQY7tskgdoFulPxPmdrzS5tNpPwIhAKnK"
+"qwzch98lINQYzLAV52+C8GXZPXFZNfhfpM4tQ6xbMA0GCSqGSIb3DQEBCwUAA4IB"
+"AQC83ALQ2d6MxeLZ/k3vutEiizRCWYSSMYLVCrxANdsGshNuyM8B8V/A57c0Nzqo"
+"CPKfMtX5IICfv9P/bUecdtHL8cfx24MzN+U/GKcA4r3a/k8pRVeHeF9ThQ2zo1xj"
+"k/7gJl75koztdqNfOeYiBTbFMnPQzVGqyMMfqKxbJrfZlGAIgYHT9bd6T985IVgz"
+"tRVjAoy4IurZenTsWkG7PafJ4kAh6jQaSu1zYEbHljuZ5PXlkhPO9DwW1WIPug6Z"
+"rlylLTTYmlW3WETOATi70HYsZN6NACuZ4t1hEO3AsF7lqjdA2HwTN10FX2HuaUvf"
+"5OzP+PKupV9VKw8x8mQKU6vr"
+"-----END CERTIFICATE-----"
+;
+
+#else
+
 // 该证书是接口【https://www.baifubao.com/callback?cmd=1059&callback=phone&phone=15900000000】的证书
 static const unsigned char __ssl_root_certificate[] =
 "-----BEGIN CERTIFICATE-----"
@@ -58,6 +124,8 @@ static const unsigned char __ssl_root_certificate[] =
 "AFQH/VKTirn/wiA6VnyxgvXGfsq1uU/9KDfXE6IWqBw1UsjPT8MktIaPRHCvtdBu"
 "-----END CERTIFICATE-----"
 ;
+
+#endif
 
 static const size_t __ssl_root_certificate_len = sizeof(__ssl_root_certificate);
 
@@ -183,13 +251,36 @@ int https_close_socket(int fd)
 
 #define TEST_MODE //开启 Debug 信息输出
 
-/* GET request header*/
-#define HTTPS_GET_API 	"GET /callback?cmd=1059&callback=phone&phone=15900000000 HTTP/1.1\r\n" /* HOST, host-port, URI */\
-								"User-Agent: wolfssl_https_demo\r\n" /* User-Agent */ \
-								"Accept: */*\r\n" \
-								"Host: www.baifubao.com\r\n" /* server name */ \
-								"Connection: Close\r\n" /* we don't support persistent connections, yet */ \
-								"\r\n"
+/* GET request header*/ 
+#ifdef USE_SPECAIL_TEST
+
+//https://tcc.taobao.com/cc/json/mobile_tel_segment.htm?tel=15900000000
+char s__host_name[] = 	"www.baidu.com";
+
+#define HTTPS_GET_API 	"GET / HTTP/1.1\r\n" /* HOST, host-port, URI */\
+						"Host: www.baidu.com\r\n" /* server name */ \
+						"\r\n"
+#else
+//https://www.baifubao.com/callback?cmd=1059&callback=phone&phone=15900000000
+char s__host_name[] = 	"www.baifubao.com";
+
+#define HTTPS_GET_API 	"GET /callback?cmd=1059&callback=phone&phone=15900000000 HTTP/1.1\r\n"\
+						"Host: www.baifubao.com\r\n"\
+						"Connection: keep-alive\r\n"\
+						"Cache-Control: max-age=0\r\n"\
+						"Upgrade-Insecure-Requests: 1\r\n"\
+						"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36\r\n"\
+						"Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9\r\n"\
+						"Sec-Fetch-Site: none\r\n"\
+						"Sec-Fetch-Mode: navigate\r\n"\
+						"Sec-Fetch-User: ?1\r\n"\
+						"Sec-Fetch-Dest: document\r\n"\
+						"Accept-Encoding: gzip, deflate, br\r\n"\
+						"Accept-Language: zh-CN,zh;q=0.9\r\n"\
+						"Cookie: BAIDUID=37A941C20A35E8388091D42BEE45BF73:FG=1; __bsi=11302079117392493273_00_42_R_R_61_0303_c02f_Y\r\n"\
+						"\r\n"
+				
+#endif
 
 //#define HTTPS_GET_API_FORMAT(req_uri, host_name) HTTPS_GET_API, req_uri, host_name
 
@@ -205,10 +296,9 @@ int test_https(void)
 	print_log("system total heap size = %d\n", xPortGetFreeHeapSize());
 
 	
-	char URL[] = "https://www.baifubao.com/callback?cmd=1059&callback=phone&phone=15900000000";
 //	char request_buffer[126] = "/callback?cmd=1059&callback=phone&phone=15900000000";
 	char http_head[] = HTTPS_GET_API;
-	vTaskDelay(5000); // 给时间测试 ping
+	vTaskDelay(3000); // 给时间测试 ping
 	
 	#ifdef TEST_MODE //开启测试模式，会打印调试信息，需要加入宏定义 DEBUG_WOLFSSL，
 		wolfSSL_Debugging_ON();
@@ -242,10 +332,8 @@ int test_https(void)
 
 	//进行域名解析
 	ip_addr_t server_ip ;
-	char host_name[] = "www.baifubao.com";
-//	char host_name[] = "www.baidu.com";
 	err_t err = ERR_OK;
-	err = netconn_gethostbyname(host_name, &server_ip);
+	err = netconn_gethostbyname(s__host_name, &server_ip);
 	if(err != ERR_OK)
 	{
         return HTTPS_DNS_IP_FAIL;
@@ -306,14 +394,32 @@ int test_https(void)
 
 	//==================================================================	
 	//接收
-	char __https_recv_buffer[2048] = {0x00};
+	char __https_recv_buffer_temp[1024] = {0x00};
+	char __https_recv_buffer[1024 * 12] = {0x00};
 	int recv_len = 0;
-	if ((recv_len = wolfSSL_read(ssl, __https_recv_buffer, sizeof(__https_recv_buffer))) <= 0)
+	int total_recv_len = 0;
+	int recv_index = 0;
+
+	do
 	{
-		return HTTPS_READ_FAIL;
-	}
+		recv_len = wolfSSL_read(ssl, __https_recv_buffer_temp, 1024);
+		total_recv_len += recv_len;
+		if(total_recv_len >= sizeof(__https_recv_buffer))  // 防止溢出
+		{
+			print_log("out of buffer !!!!!");
+			total_recv_len = recv_index;
+			// 重新申请内存， 使用类似 realloc 的方法，此处 demo 直接跳出 
+			break;
+		}
+		
+		snprintf(&__https_recv_buffer[recv_index], recv_len, "%s", __https_recv_buffer_temp);
+		recv_index += recv_len;
+		
+	}while(recv_len >= 0);
 	
-	print_log("========== \n https recv data :\n %s\n ========== \n\n",__https_recv_buffer);
+	print_log("\n ========== \n\n");
+	print_log("https recv data : recv_len = %d, buffer = \n%s\n",total_recv_len, __https_recv_buffer);
+	print_log("\n ========== \n\n");
 	
 	//==================================================================
 	
