@@ -113,7 +113,7 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
 	
-  osThreadDef(https_demo, test_https_task, osPriorityAboveNormal, 0, configMINIMAL_STACK_SIZE*4);
+  osThreadDef(https_demo, test_https_task, osPriorityAboveNormal, 0, configMINIMAL_STACK_SIZE*6);
   httpsDemoTaskHandle = osThreadCreate(osThread(https_demo), NULL);
   /* USER CODE END RTOS_THREADS */
 

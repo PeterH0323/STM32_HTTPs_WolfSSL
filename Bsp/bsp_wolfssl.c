@@ -395,18 +395,29 @@ int test_https(void)
 	//==================================================================	
 	//接收
 	char __https_recv_buffer_temp[1024] = {0x00};
+	int signal_pack_size = sizeof(__https_recv_buffer_temp);
+	
 	char __https_recv_buffer[1024 * 12] = {0x00};
 	int recv_len = 0;
 	int total_recv_len = 0;
 	int recv_index = 0;
-
+	int packet_index = 0;
 	for(;;)
 	{
-		recv_len = wolfSSL_read(ssl, __https_recv_buffer_temp, 1024);
-		if(recv_len == 0)
+		recv_len = wolfSSL_read(ssl, __https_recv_buffer_temp, signal_pack_size);
+		if(recv_len <= 0)
 		{
 			break;
 		}
+		
+		packet_index += 1;
+		if(packet_index == 1)
+		{
+			//取第一包，第一包是 http header，里面有 Content-Length: 是表示 body 的长度，
+			//header 部分的结束是 \r\n\r\n 为结束
+			//计算是否是 < Content-Length 的长度，可以判断是否继续接收
+		}
+
 		total_recv_len += recv_len;
 		if(total_recv_len >= sizeof(__https_recv_buffer))  // 防止溢出
 		{
@@ -418,11 +429,18 @@ int test_https(void)
 		
 		snprintf(&__https_recv_buffer[recv_index], recv_len, "%s", __https_recv_buffer_temp);
 		recv_index += recv_len;
+		
+//		if(recv_len < signal_pack_size)
+//		{
+			//这种可用这种方法跳出，存疑
+//			print_log("recv_len < signal_pack_size, means recv done!!!!!");
+//			break;
+//		}
 	}
 	
 	print_log("\n ========== \n\n");
 //	print_log("https recv data : recv_len = %d, buffer = \n%s\n",total_recv_len, __https_recv_buffer);
-	print_log("https recv data : recv_len = %d, buffer is too big, use software debug [watch] to vertify\n",total_recv_len);
+	print_log("https recv data : recv_len = %d, buffer is too big, use software debug [Memory] to vertify\n",total_recv_len);
 	print_log("\n ========== \n\n");
 	
 	//==================================================================
