@@ -20,9 +20,9 @@
 
 // 需要访问的服务器的 CA 证书
 
-#define USE_SPECAIL_TEST // 使用 其他 的测试接口
+#define USE_BAIDU_TEST // 直接使用 百度 接口测试，返回的网页需要使用 debug 去看， Segger 无法打印
 
-#ifdef USE_SPECAIL_TEST
+#ifdef USE_BAIDU_TEST
 static const unsigned char __ssl_root_certificate[] =
 "-----BEGIN CERTIFICATE-----"
 "MIIKLjCCCRagAwIBAgIMclh4Nm6fVugdQYhIMA0GCSqGSIb3DQEBCwUAMGYxCzAJ"
@@ -252,7 +252,7 @@ int https_close_socket(int fd)
 #define TEST_MODE //开启 Debug 信息输出
 
 /* GET request header*/ 
-#ifdef USE_SPECAIL_TEST
+#ifdef USE_BAIDU_TEST
 
 //https://tcc.taobao.com/cc/json/mobile_tel_segment.htm?tel=15900000000
 char s__host_name[] = 	"www.baidu.com";
@@ -400,9 +400,13 @@ int test_https(void)
 	int total_recv_len = 0;
 	int recv_index = 0;
 
-	do
+	for(;;)
 	{
 		recv_len = wolfSSL_read(ssl, __https_recv_buffer_temp, 1024);
+		if(recv_len == 0)
+		{
+			break;
+		}
 		total_recv_len += recv_len;
 		if(total_recv_len >= sizeof(__https_recv_buffer))  // 防止溢出
 		{
@@ -414,11 +418,11 @@ int test_https(void)
 		
 		snprintf(&__https_recv_buffer[recv_index], recv_len, "%s", __https_recv_buffer_temp);
 		recv_index += recv_len;
-		
-	}while(recv_len >= 0);
+	}
 	
 	print_log("\n ========== \n\n");
-	print_log("https recv data : recv_len = %d, buffer = \n%s\n",total_recv_len, __https_recv_buffer);
+//	print_log("https recv data : recv_len = %d, buffer = \n%s\n",total_recv_len, __https_recv_buffer);
+	print_log("https recv data : recv_len = %d, buffer is too big, use software debug [watch] to vertify\n",total_recv_len);
 	print_log("\n ========== \n\n");
 	
 	//==================================================================
