@@ -313,6 +313,8 @@ int test_https(void)
 		return HTTPS_READ_FAIL;
 	}
 	
+	print_log("========== \n https recv data :\n %s\n ========== \n\n",__https_recv_buffer);
+	
 	//==================================================================
 	
 	//释放空间
