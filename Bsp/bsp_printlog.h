@@ -32,6 +32,6 @@ void segger_rtt_init(char * str);
 *
 * @retval: 无
 */
-void print_log(const char * str);
+void print_log(const char * sFormat, ...);
 
 #endif /* __BSP_WOLFSSL_H */

@@ -64,7 +64,7 @@ extern "C" {
 #endif
 
 //Enable wolfssl log print
-//#define DEBUG_WOLFSSL
+#define DEBUG_WOLFSSL
 #ifdef DEBUG_WOLFSSL
 	#undef  WOLFSSL_DEBUG_ERRORS_ONLY
 

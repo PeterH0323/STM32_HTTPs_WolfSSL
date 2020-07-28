@@ -27,6 +27,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */     
 #include "bsp_wolfssl.h"
+#include "bsp_printlog.h"
 
 /* USER CODE END Includes */
 
@@ -50,6 +51,7 @@
 
 /* USER CODE END Variables */
 osThreadId defaultTaskHandle;
+osThreadId httpsDemoTaskHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -85,7 +87,6 @@ void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer, StackTy
   */
 void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN Init */
-       
   /* USER CODE END Init */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -106,11 +107,14 @@ void MX_FREERTOS_Init(void) {
 
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
+  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, configMINIMAL_STACK_SIZE);
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
+	
+  osThreadDef(https_demo, test_https_task, osPriorityAboveNormal, 0, configMINIMAL_STACK_SIZE*4);
+  httpsDemoTaskHandle = osThreadCreate(osThread(https_demo), NULL);
   /* USER CODE END RTOS_THREADS */
 
 }
@@ -127,10 +131,7 @@ void StartDefaultTask(void const * argument)
   /* init code for LWIP */
   MX_LWIP_Init();
   /* USER CODE BEGIN StartDefaultTask */
-	
-  osThreadDef(https_demo, test_https_task, osPriorityNormal, 0, 128);
-  defaultTaskHandle = osThreadCreate(osThread(https_demo), NULL);
-	
+
   /* Infinite loop */
   for(;;)
   {
