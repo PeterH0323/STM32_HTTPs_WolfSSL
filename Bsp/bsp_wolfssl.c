@@ -139,7 +139,10 @@ static const size_t __ssl_root_certificate_len = sizeof(__ssl_root_certificate);
 */
 time_t XTIME(time_t * timer)
 {
-	time_t timestamp = 1595908571; // 没有实现 SNTP，先使用网上获取的最新时间的时间戳
+//	time_t timestamp = 1595908571; // 没有实现 SNTP，先使用网上获取的最新时间的时间戳
+	
+	#include "bsp_sntp.h" 
+	time_t timestamp = get_timestamp(); // 实现 SNTP 可以直接获取时间
 	return timestamp;
 }
 

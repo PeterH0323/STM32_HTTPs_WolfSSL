@@ -32,15 +32,11 @@ uint32_t get_timestamp(void)
     HAL_RTC_GetDate(&hrtc, &g_Date, RTC_FORMAT_BIN);
 
     stm.tm_year = g_Date.Year + 100;    //RTC_Year rang 0-99,but tm_year since 1900
-
     stm.tm_mon = g_Date.Month - 1;      //RTC_Month rang 1-12,but tm_mon rang 0-11
-
     stm.tm_mday = g_Date.Date;          //RTC_Date rang 1-31 and tm_mday rang 1-31
 
     stm.tm_hour = g_Time.Hours;         //RTC_Hours rang 0-23 and tm_hour rang 0-23
-
     stm.tm_min = g_Time.Minutes;        //RTC_Minutes rang 0-59 and tm_min rang 0-59
-
     stm.tm_sec = g_Time.Seconds;
 
 	return (mktime(&stm) - (8 * 60 * 60));///配置时由于东八区增加8小时，现为时间戳，需减去

@@ -130,7 +130,7 @@
 #define DNS_SERVER_ADDRESS(ipaddr) (ip4_addr_set_u32(ipaddr, ipaddr_addr("114.114.114.114"))) 
 
 //开启 LWIP DEBUG
-#define LWIP_DEBUG
+//#define LWIP_DEBUG
 #include "bsp_printlog.h"
 #undef LWIP_PLATFORM_DIAG
 #define LWIP_PLATFORM_DIAG(x) do {print_log x;} while(0)
