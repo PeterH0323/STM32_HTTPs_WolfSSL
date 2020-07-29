@@ -2,8 +2,32 @@
  * Includes files
  *----------------------------------------------------------*/
 
-/* segger rtt includes. */
+/* lwip includes. */
 #include "lwip/apps/sntp.h"
+
+/* segger rtt includes. */
+#include "bsp_printlog.h"
+
+/*!
+* @brief SNTP 获取时间戳的处理函数
+*        执行条件：无
+*
+* @param [in] : sntp 获取的时间戳
+*
+* @retval: 无
+*/
+void sntp_set_time(uint32_t sntp_time)
+{
+	if(sntp_time == 0)
+	{
+		print_log("sntp_set_time wrong!@@\n");
+		return;
+	}
+	
+	print_log("sntp_set_time enter!\n");
+	print_log("get time = %u\n", sntp_time);
+	
+}
 
 
 /*!
@@ -44,7 +68,12 @@ void set_sntp_server_list(void)
 */
 void bsp_sntp_init(void)
 {
+	//设置 SNTP 的获取方式 -> 使用向服务器获取方式
 	sntp_setoperatingmode(SNTP_OPMODE_POLL);
+	
+	//SNTP 初始化
 	sntp_init();
+	
+	//加入授时中心的IP信息
 	set_sntp_server_list();
 }

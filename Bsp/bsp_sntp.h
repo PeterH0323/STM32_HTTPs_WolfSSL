@@ -2,6 +2,7 @@
 #ifndef __BSP_SNTP_H
 #define __BSP_SNTP_H
 
+#include <stdint.h>
 /*-----------------------------------------------------------
  * Includes files
  *----------------------------------------------------------*/
@@ -26,5 +27,15 @@
 * @retval: 无
 */
 void bsp_sntp_init(void);
+
+/*!
+* @brief SNTP 获取时间戳的处理函数
+*        执行条件：无
+*
+* @param [in] : sntp 获取的时间戳
+*
+* @retval: 无
+*/
+void sntp_set_time(uint32_t sntp_time);
 
 #endif /* __BSP_WOLFSSL_H */

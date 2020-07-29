@@ -129,15 +129,19 @@
 /* USER CODE BEGIN 1 */
 #define DNS_SERVER_ADDRESS(ipaddr) (ip4_addr_set_u32(ipaddr, ipaddr_addr("114.114.114.114"))) 
 
-//¿ªÆô LWIP DEBUG
+//å¼€å¯ LWIP DEBUG
 #define LWIP_DEBUG
 #include "bsp_printlog.h"
+#undef LWIP_PLATFORM_DIAG
 #define LWIP_PLATFORM_DIAG(x) do {print_log x;} while(0)
 
 
-//¿ªÆô SNTP DEBUG
+//å¼€å¯ SNTP DEBUG
 #define SNTP_DEBUG                  LWIP_DBG_ON
 
+//å®šä¹‰ Lwip SNTP çš„ å¤„ç†å‡½æ•°
+#include "bsp_sntp.h"
+#define SNTP_SET_SYSTEM_TIME		sntp_set_time
 
 /* USER CODE END 1 */
 
