@@ -69,13 +69,12 @@ void MX_FREERTOS_Init(void);
   * @brief  The application entry point.
   * @retval int
   */
-
 int main(void)
 {
   /* USER CODE BEGIN 1 */
 	segger_rtt_init("Demo start !!!");
   /* USER CODE END 1 */
-	
+
   /* MPU Configuration--------------------------------------------------------*/
   MPU_Config();
 

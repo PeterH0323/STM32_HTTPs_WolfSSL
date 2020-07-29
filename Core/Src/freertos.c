@@ -26,8 +26,12 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */     
+
+/* bsp includes. */
 #include "bsp_wolfssl.h"
 #include "bsp_printlog.h"
+#include "bsp_sntp.h"
+
 
 /* USER CODE END Includes */
 
@@ -48,18 +52,16 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
-
+osThreadId httpsDemoTaskHandle;
 /* USER CODE END Variables */
 osThreadId defaultTaskHandle;
-osThreadId httpsDemoTaskHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
-   
+void test_https_task(void const * argument); 
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void const * argument);
-void test_https_task(void const * argument);
 
 extern void MX_LWIP_Init(void);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
@@ -112,9 +114,10 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
-	
+#if 0
   osThreadDef(https_demo, test_https_task, osPriorityAboveNormal, 0, configMINIMAL_STACK_SIZE*6);
   httpsDemoTaskHandle = osThreadCreate(osThread(https_demo), NULL);
+#endif
   /* USER CODE END RTOS_THREADS */
 
 }
@@ -131,7 +134,7 @@ void StartDefaultTask(void const * argument)
   /* init code for LWIP */
   MX_LWIP_Init();
   /* USER CODE BEGIN StartDefaultTask */
-
+	bsp_sntp_init();
   /* Infinite loop */
   for(;;)
   {
@@ -151,9 +154,7 @@ void test_https_task(void const * argument)
   {
     osDelay(1);
   }
-  /* USER CODE END StartDefaultTask */
 }
-
 /* USER CODE END Application */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -99,6 +99,10 @@
 #define LWIP_ND6_ALLOW_RA_UPDATES 0
 /*----- Default Value for LWIP_ND6_TCP_REACHABILITY_HINTS: 1 ---*/
 #define LWIP_ND6_TCP_REACHABILITY_HINTS 0
+/*----- Default Value for LWIP_SNTP: 0 ---*/
+#define LWIP_SNTP 1
+/*----- Default Value for SNTP_MAX_SERVERS: 1 ---*/
+#define SNTP_MAX_SERVERS 11
 /*----- Value in opt.h for LWIP_STATS: 1 -----*/
 #define LWIP_STATS 0
 /*----- Value in opt.h for CHECKSUM_GEN_IP: 1 -----*/
@@ -124,6 +128,16 @@
 /*-----------------------------------------------------------------------------*/
 /* USER CODE BEGIN 1 */
 #define DNS_SERVER_ADDRESS(ipaddr) (ip4_addr_set_u32(ipaddr, ipaddr_addr("114.114.114.114"))) 
+
+//¿ªÆô LWIP DEBUG
+#define LWIP_DEBUG
+#include "bsp_printlog.h"
+#define LWIP_PLATFORM_DIAG(x) do {print_log x;} while(0)
+
+
+//¿ªÆô SNTP DEBUG
+#define SNTP_DEBUG                  LWIP_DBG_ON
+
 
 /* USER CODE END 1 */
 
