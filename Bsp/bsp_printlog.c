@@ -31,6 +31,10 @@ void print_log(const char * sFormat, ...)
 void segger_rtt_init(char * str)
 {
 	SEGGER_RTT_Init();
-	print_log(str);
+	print_log("==================================\n");
+	print_log("==================================\n");
+	print_log("========= %s =========\n",str);  // 封装接口，无需填写 BUFFER_INDEX
+	print_log("==================================\n");
+	print_log("==================================\n");
 }
 
