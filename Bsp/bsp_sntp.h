@@ -38,4 +38,13 @@ void bsp_sntp_init(void);
 */
 void sntp_set_time(uint32_t sntp_time);
 
+/*!
+ * @brief 获取当前时间戳
+ *
+ * @param [in] none
+ *
+ * @retval 当前时间戳
+ */
+uint32_t get_timestamp(void);
+
 #endif /* __BSP_WOLFSSL_H */
