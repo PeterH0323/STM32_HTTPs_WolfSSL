@@ -326,7 +326,7 @@ sntp_process(const struct sntp_timestamps *timestamps)
   SNTP_SET_SYSTEM_TIME_NTP(sec, frac);
   LWIP_UNUSED_ARG(frac); /* might be unused if only seconds are set */
   LWIP_DEBUGF(SNTP_DEBUG_TRACE, ("sntp_process: %s, %" U32_F " us\n",
-                                 sntp_format_time(sec), SNTP_FRAC_TO_US(frac)) );
+                                 sntp_format_time(sec), SNTP_FRAC_TO_US(frac)));
 }
 
 /**
