@@ -23,13 +23,12 @@
 *
 * @retval: 无
 */
-err_t bsp_dhcp_start(void)
+err_t bsp_dhcp(void)
 {
     struct dhcp *dhcp;
 	uint32_t over_time = 0;
 	
 	struct netif *netif_p = netif_default;
-	
 	
 	if(netif_p == NULL)
 	{

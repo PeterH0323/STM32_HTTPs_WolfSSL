@@ -31,6 +31,7 @@
 #include "bsp_wolfssl.h"
 #include "bsp_printlog.h"
 #include "bsp_sntp.h"
+#include "bsp_dhcp.h"
 
 
 /* USER CODE END Includes */
@@ -134,7 +135,13 @@ void StartDefaultTask(void const * argument)
   /* init code for LWIP */
   MX_LWIP_Init();
   /* USER CODE BEGIN StartDefaultTask */
-	bsp_sntp_init();
+	while(bsp_dhcp() != 0)
+	{
+		//正在尝试 dhcp 获取 IP
+		;
+	}
+//	
+//	bsp_sntp_init();
   /* Infinite loop */
   for(;;)
   {

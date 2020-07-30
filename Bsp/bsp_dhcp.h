@@ -27,6 +27,6 @@
 *
 * @retval: 无
 */
-err_t bsp_dhcp_start(void);
+err_t bsp_dhcp(void);
 
 #endif /* __BSP_WOLFSSL_H */
