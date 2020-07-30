@@ -165,12 +165,17 @@
           <WinNumber>1</WinNumber>
           <ItemText>gnetif</ItemText>
         </Ww>
+        <Ww>
+          <count>2</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>netif_default</ItemText>
+        </Ww>
       </WatchWindow1>
       <MemoryWindow1>
         <Mm>
           <WinNumber>1</WinNumber>
-          <SubType>8</SubType>
-          <ItemText>__https_recv_buffer</ItemText>
+          <SubType>0</SubType>
+          <ItemText>\\HTTPS_Demo\../LWIP/App/lwip.c\gnetif.client_data</ItemText>
           <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow1>
@@ -364,7 +369,7 @@
 
   <Group>
     <GroupName>Application/User/LWIP/Target</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>

@@ -46,11 +46,13 @@ struct netif gnetif;
 ip4_addr_t ipaddr;
 ip4_addr_t netmask;
 ip4_addr_t gw;
+/* USER CODE BEGIN 2 */
+
+#if !LWIP_DHCP
 uint8_t IP_ADDRESS[4];
 uint8_t NETMASK_ADDRESS[4];
 uint8_t GATEWAY_ADDRESS[4];
-
-/* USER CODE BEGIN 2 */
+#endif /* !LWIP_DHCP */
 
 /* USER CODE END 2 */
 
@@ -59,6 +61,8 @@ uint8_t GATEWAY_ADDRESS[4];
   */
 void MX_LWIP_Init(void)
 {
+	
+#if !LWIP_DHCP
   /* IP addresses initialization */
   IP_ADDRESS[0] = 192;
   IP_ADDRESS[1] = 168;
@@ -72,14 +76,22 @@ void MX_LWIP_Init(void)
   GATEWAY_ADDRESS[1] = 168;
   GATEWAY_ADDRESS[2] = 1;
   GATEWAY_ADDRESS[3] = 1;
-  
+#endif /* !LWIP_DHCP */
+	
   /* Initilialize the LwIP stack with RTOS */
   tcpip_init( NULL, NULL );
 
+#if !LWIP_DHCP
   /* IP addresses initialization without DHCP (IPv4) */
   IP4_ADDR(&ipaddr, IP_ADDRESS[0], IP_ADDRESS[1], IP_ADDRESS[2], IP_ADDRESS[3]);
   IP4_ADDR(&netmask, NETMASK_ADDRESS[0], NETMASK_ADDRESS[1] , NETMASK_ADDRESS[2], NETMASK_ADDRESS[3]);
-  IP4_ADDR(&gw, GATEWAY_ADDRESS[0], GATEWAY_ADDRESS[1], GATEWAY_ADDRESS[2], GATEWAY_ADDRESS[3]);
+  IP4_ADDR(&gw, GATEWAY_ADDRESS[0], GATEWAY_ADDRESS[1], GATEWAY_ADDRESS[2], GATEWAY_ADDRESS[3]);	
+#else
+/* IP addresses initialization with DHCP (IPv4) */
+  ipaddr.addr = 0;
+  netmask.addr = 0;
+  gw.addr = 0;
+#endif /* !LWIP_DHCP */
 
   /* add the network interface (IPv4/IPv6) with RTOS */
   netif_add(&gnetif, &ipaddr, &netmask, &gw, NULL, &ethernetif_init, &tcpip_input);
@@ -112,6 +124,11 @@ void MX_LWIP_Init(void)
   osThreadDef(LinkThr, ethernetif_set_link, osPriorityBelowNormal, 0, configMINIMAL_STACK_SIZE * 2);
   osThreadCreate (osThread(LinkThr), &link_arg);
 /* USER CODE END OS_THREAD_DEF_CREATE_CMSIS_RTOS_V1 */
+
+  /* Start DHCP negotiation for a network interface (IPv4) */
+#if LWIP_DHCP
+  dhcp_start(&gnetif); //Ô­½Ó¿Ú
+#endif /* LWIP_DHCP */
 
 /* USER CODE BEGIN 3 */
 

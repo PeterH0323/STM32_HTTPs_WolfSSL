@@ -47,6 +47,8 @@
 
 /* LwIP Stack Parameters (modified compared to initialization value in opt.h) -*/
 /* Parameters set in STM32CubeMX LwIP Configuration GUI -*/
+/*----- Value in opt.h for LWIP_DHCP: 0 -----*/
+#define LWIP_DHCP 1
 /*----- Default Value for LWIP_DNS: 0 ---*/
 #define LWIP_DNS 1
 /*----- Value in opt.h for MEM_ALIGNMENT: 1 -----*/
@@ -63,6 +65,8 @@
 #define TCP_SNDQUEUELOWAT 5
 /*----- Value in opt.h for TCP_WND_UPDATE_THRESHOLD: LWIP_MIN(TCP_WND/4, TCP_MSS*4) -----*/
 #define TCP_WND_UPDATE_THRESHOLD 536
+/*----- Default Value for LWIP_NETIF_HOSTNAME: 0 ---*/
+#define LWIP_NETIF_HOSTNAME 1
 /*----- Default Value for LWIP_NETIF_STATUS_CALLBACK: 0 ---*/
 #define LWIP_NETIF_STATUS_CALLBACK 1
 /*----- Default Value for LWIP_NETIF_EXT_STATUS_CALLBACK: 0 ---*/
@@ -130,18 +134,23 @@
 #define DNS_SERVER_ADDRESS(ipaddr) (ip4_addr_set_u32(ipaddr, ipaddr_addr("114.114.114.114"))) 
 
 //开启 LWIP DEBUG
-//#define LWIP_DEBUG
+#define LWIP_DEBUG
 #include "bsp_printlog.h"
 #undef LWIP_PLATFORM_DIAG
 #define LWIP_PLATFORM_DIAG(x) do {print_log x;} while(0)
 
 
-//开启 SNTP DEBUG
-#define SNTP_DEBUG                  LWIP_DBG_ON
-
 //定义 Lwip SNTP 的 处理函数
 #include "bsp_sntp.h"
 #define SNTP_SET_SYSTEM_TIME		sntp_set_time
+
+
+
+//开启 lwip 单个模块的 DEBUG
+//#define SNTP_DEBUG                  LWIP_DBG_ON
+//#define DHCP_DEBUG                  LWIP_DBG_ON
+
+
 
 /* USER CODE END 1 */
 
