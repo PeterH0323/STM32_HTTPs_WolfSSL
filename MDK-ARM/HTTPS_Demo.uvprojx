@@ -1052,6 +1052,11 @@
               <FileType>1</FileType>
               <FilePath>../Middlewares/Third_Party/LwIP/src/apps/sntp/sntp.c</FilePath>
             </File>
+            <File>
+              <FileName>netbiosns.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\Third_Party\LwIP\src\apps\netbiosns\netbiosns.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

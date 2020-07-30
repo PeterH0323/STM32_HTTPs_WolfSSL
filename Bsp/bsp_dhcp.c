@@ -9,7 +9,7 @@
 /* bsp includes. */
 #include "lwip/dhcp.h"
 #include "lwip/dns.h"
-//#include "lwip/apps/netbiosns.h"
+#include "lwip/apps/netbiosns.h"
 
 /* bsp includes. */
 #include "bsp_printlog.h"
@@ -34,14 +34,16 @@ err_t bsp_dhcp(void)
 	{
 		return ERR_VAL;
 	}
-//    netif->hostname = "THOSTP";
 
     /* Start DHCP negotiation for a network interface (IPv4) */
 //    dhcp_start(netif);
 
 	//设置计算机名 (测试方法: (1)ping 计算机名 (2)用浏览器访问 http://计算机名/)
-//	netbiosns_init();
-//	netbiosns_set_name(netif->hostname);
+    
+	netif_p->hostname = "THOSTP"; //设置 Host Name
+	
+	netbiosns_init();
+	netbiosns_set_name(netif_p->hostname);
 
 	// 外部定义了 netif_default
     while(!dhcp_supplied_address(netif_p))
