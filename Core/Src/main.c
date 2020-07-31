@@ -63,6 +63,74 @@ void MX_FREERTOS_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+/*!
+ * @brief 外部SRAM测试函数
+ * @param [in] none
+ * @retval None
+ */
+static int Test_Exter_SRAM(void)
+{
+	#define EXTER_SRAM_ADDRESS (0x60000000)
+	#define TEST_SIZE (1024)
+	#define TEST_SIZE_BYTE (255)
+	
+	int* addr = (int*)EXTER_SRAM_ADDRESS;
+	short* saddr = (short*)EXTER_SRAM_ADDRESS;
+	char* caddr = (char*)EXTER_SRAM_ADDRESS;
+	int int_test;
+	short short_test;
+	unsigned char char_test;
+
+	//32b
+	for (int_test = 0; int_test < TEST_SIZE; int_test++)
+	{
+		addr[int_test] = int_test;
+	}
+	for (int_test = 0; int_test < TEST_SIZE; int_test++)
+	{
+		if (addr[int_test] != int_test)
+		{
+			print_log("***************__TestExtSRAM failed!!\n");
+			return -1;
+		}
+	}
+	//16b
+	for (short_test = 0; short_test < TEST_SIZE; short_test++)
+	{
+		saddr[short_test] = short_test;
+	}
+	for (short_test = 0; short_test < TEST_SIZE; short_test++)
+	{
+		if (saddr[short_test] != short_test)
+		{
+			print_log("***************__TestExtSRAM failed!!\n");
+			return -2;
+		}
+	}
+	//8b
+	for (char_test = 0; char_test < TEST_SIZE_BYTE; char_test++)
+	{
+		caddr[char_test] = char_test;
+	}
+	for (char_test = 0; char_test < TEST_SIZE_BYTE; char_test++)
+	{
+		if (caddr[char_test] != char_test)
+		{
+			print_log("***************__TestExtSRAM failed!!\n");
+			return -3;
+		}
+	}
+	print_log("***************__TestExtSRAM OK!\n");
+	
+	//清空外部SRAM
+	for (int_test = 0; int_test < TEST_SIZE; int_test++)
+	{
+		addr[int_test] = 0;
+	}
+	
+	return 0;
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -106,7 +174,7 @@ int main(void)
   MX_RTC_Init();
   MX_RNG_Init();
   /* USER CODE BEGIN 2 */
-
+	Test_Exter_SRAM(); // 测试外部 SRAM
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in freertos.c) */
