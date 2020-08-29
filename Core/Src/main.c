@@ -63,6 +63,9 @@ void MX_FREERTOS_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+//#define USING_SRAM //开启外部 SRAM
+#ifdef USING_SRAM
+
 /*!
  * @brief 外部SRAM测试函数
  * @param [in] none
@@ -131,6 +134,8 @@ static int Test_Exter_SRAM(void)
 	return 0;
 }
 
+#endif /* USING_SRAM */
+
 /* USER CODE END 0 */
 
 /**
@@ -170,11 +175,13 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+#ifdef USING_SRAM
   MX_FMC_Init();
+  Test_Exter_SRAM(); // 测试外部 SRAM
+#endif /* USING_SRAM */
   MX_RTC_Init();
   MX_RNG_Init();
   /* USER CODE BEGIN 2 */
-	Test_Exter_SRAM(); // 测试外部 SRAM
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in freertos.c) */
@@ -313,7 +320,8 @@ void MPU_Config(void)
 
   HAL_MPU_ConfigRegion(&MPU_InitStruct);
   /** Initializes and configures the Region and the memory to be protected 
-  */
+  */  
+#ifdef USING_SRAM
   MPU_InitStruct.Enable = MPU_REGION_ENABLE;
   MPU_InitStruct.Number = MPU_REGION_NUMBER3;
   MPU_InitStruct.BaseAddress = 0x60000000;
@@ -327,6 +335,7 @@ void MPU_Config(void)
   MPU_InitStruct.IsBufferable = MPU_ACCESS_BUFFERABLE;
 
   HAL_MPU_ConfigRegion(&MPU_InitStruct);
+#endif /* USING_SRAM */
   /* Enables the MPU */
   HAL_MPU_Enable(MPU_HFNMI_PRIVDEF);
 
