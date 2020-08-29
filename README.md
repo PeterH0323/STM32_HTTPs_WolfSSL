@@ -8,7 +8,7 @@
 
 
 
-详细教程请看：
+详细教程请看我写的博文：[【嵌入式实战】STM32+FreeRTOS+LWIP+WolfSSL 实现 HTTPS（超详细）](https://blog.csdn.net/hxj0323/article/details/108296539)
 
 
 
