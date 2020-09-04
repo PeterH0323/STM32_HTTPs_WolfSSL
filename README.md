@@ -4,7 +4,7 @@
 
 # STM32_HTTPs_WolfSSL
 
-这个 Demo 实现 STM32 STM32+FreeRTOS+Lwip+WolfSSL 的 HTTPS 功能，同时，开启了 DHCP、SNTP、netbios 功能
+这个 Demo 实现 STM32+FreeRTOS+Lwip+WolfSSL 的 HTTPS 功能，同时，开启了 DHCP、SNTP、netbios 功能
 
 
 
